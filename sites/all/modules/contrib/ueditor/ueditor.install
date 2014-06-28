@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+function ueditor_uninstall() {
+  variable_del('ueditor_uploadpath_config');
+}
