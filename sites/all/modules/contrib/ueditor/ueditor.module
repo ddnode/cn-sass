@@ -14,14 +14,26 @@ function ueditor_init() {
 		drupal_add_css($lib_path . '/themes/default/css/ueditor.css');
 	}
   drupal_add_js(drupal_get_path('module', 'ueditor') . '/js/ueditor.toolbars.js');
+
+	// Load SyntaxHighlighter js and css.
+	if(variable_get('ueditor_highlighting_format') == 1){
+		drupal_add_css($lib_path . '/third-party/SyntaxHighlighter/shCoreDefault.css');
+		drupal_add_js($lib_path . '/third-party/SyntaxHighlighter/shCore.js', array('weight' => -1));
+		drupal_add_js('SyntaxHighlighter.all();', array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+	}
 }
 
 /**
  * Implements hook_permission().
  */
 function ueditor_permission() {
-  $perms['upload file with ueditor'] = array(
-    'title' => t('Upload file with ueditor'),
+	$perms = array(
+    'upload file with ueditor' => array(
+      'title' => t('Upload file with ueditor'),
+    ),
+    'administer ueditor' => array(
+      'title' => t('Administer ueditor'),
+    ),
   );
 
 	return $perms;
@@ -31,6 +43,13 @@ function ueditor_permission() {
  * Implements hook_menu().
  */
 function ueditor_menu() {
+  $items['admin/config/content/ueditor'] = array(
+    'title' => 'UEditor Global Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ueditor_global_settings'),
+    'description' => 'Configure ueditor global options.',
+    'access arguments' => array('administer ueditor'),
+  );
 	$items['ueditor/controller'] = array(		
 		'title' => 'Ueditor Control',
     'page callback' => '_ueditor_controller',		
@@ -145,4 +164,30 @@ function _ueditor_realpath($path, $auto=FALSE) {
   if($auto) $path .= '/';
   $path = str_replace('//', '/', $path);
   return $path;
+}
+
+/**
+ * Config options for ueditor global settings.
+ */
+function ueditor_global_settings($form, &$form_state) {
+  $form['global']['ueditor_highlighting_format'] = array(
+    '#type' => 'checkbox',
+		'#title' => t('Enable Highlighting Code Format'),
+		'#default_value' => variable_get('ueditor_highlighting_format',1),
+		'#description' => t('If enabled, when you insert code, the code will highlighting.'),
+  );
+
+	$form['submit'] = array('#type' => 'submit', '#value' => t('Save'));
+
+  return $form;
+}
+
+/**
+ * Submit callback for ueditor global settings form.
+ */
+function ueditor_global_settings_submit($form, &$form_state) {
+  if(isset($form_state['values']['ueditor_highlighting_format'])) {
+    variable_set('ueditor_highlighting_format', $form_state['values']['ueditor_highlighting_format']);
+  }
+	drupal_set_message(t('The config save successful.'));
 }

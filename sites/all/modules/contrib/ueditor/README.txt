@@ -25,8 +25,10 @@ so that there's like sites/all/libraries/ueditor/ueditor.all.js.
 3. Do like this https://drupal.org/node/2286333
 4. Enabled ueditor module.
 5. Go to admin/people/permissions and grant permission to any roles that need to be 
-  able to upload file with ueditor.
-6. Configure the module at admin/config/content/wysiwyg
+able to upload file with ueditor.
+6. Configure the module at admin/config/content/wysiwyg (You must save at least
+once, so that the editor is initialized, otherwise, the editor does not appear)
+7. Configure the module at admin/config/content/ueditor (Optional)
 
 Known Issues
 -----------------

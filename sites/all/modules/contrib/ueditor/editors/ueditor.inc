@@ -86,18 +86,23 @@ function ueditor_settings_form(&$form, &$form_state) {
     '#default_value' => $settings['initial_content'],
     '#maxlength' => 255,
   );
+  $form['basic']['allowdivtop'] = array(
+    '#type' => 'checkbox',
+		'#title' => t('Allow Div Convert to P'),
+		'#default_value' => $settings['allowdivtop'],
+		'#description' => t('If enable, the Div tags converted to P tag.'),
+  );
   $form['basic']['auto_height'] = array(
     '#type' => 'checkbox',
 		'#title' => t('Auto Height'),
 		'#default_value' => $settings['auto_height'],
-		'#description' => t('If enable ,the editor will auto height.'),
+		'#description' => t('If enable, the editor will auto height.'),
   );
-
   $form['basic']['auto_float'] = array(
     '#type' => 'checkbox',
 		'#title' => t('Auto Float'),
 		'#default_value' => $settings['auto_float'],
-		'#description' => t('If enable ,the editor will auto float.'),
+		'#description' => t('If enable, the editor will auto float.'),
   );
 	$form['basic']['appearance'] = array(
     '#type'         => 'fieldset',
@@ -105,7 +110,7 @@ function ueditor_settings_form(&$form, &$form_state) {
     '#collapsible'  => TRUE,
     '#collapsed'    => FALSE,		
 		'#attributes'			=> array('class' => array('edui-default')),
-  );	
+  );
   $form['basic']['appearance']['toolbars'] = array(
     '#type'           => 'textarea',
     '#title'          => t('Toolbars'),
@@ -291,9 +296,10 @@ function _ueditor_toolbars($toolbars) {
 function ueditor_config_default(&$settings) {
 	$settings['language'] = 'en';
 	$settings['initial_content'] = '';
-	$settings['zindex'] = 900;
+	$settings['zindex'] = 500;
 	$settings['auto_height'] = TRUE;
 	$settings['auto_float'] = TRUE;
+	$settings['allowdivtop'] = FALSE;
 	$settings['imagePathFormat'] = '/%b%f/%u/ueditor/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}';
 	$settings['scrawlPathFormat'] = '/%b%f/%u/ueditor/upload/scrawl/{yyyy}{mm}{dd}/{time}{rand:6}';
 	$settings['filePathFormat'] = '/%b%f/%u/ueditor/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}';

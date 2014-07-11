@@ -12,6 +12,7 @@ Drupal.wysiwyg.editor.attach.ueditor = function (context, params, settings) {
 		toolbars: settings['toolbars'],
     autoHeightEnabled: settings['auto_height'],
     autoFloatEnabled: settings['auto_float'],
+		allowDivTransToP: settings['allowdivtop'],
   };
   var editor = new baidu.editor.ui.Editor(editorOption);
   // Attach editor.
